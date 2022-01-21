@@ -1,7 +1,7 @@
 NAME		=	minitalk
 
-SRCS_CLIENT	=	
-SRCS_SERVER	=
+SRCS_CLIENT	=	$(addprefix srcs/, )
+SRCS_SERVER	=	$(addprefix srcs/, )
 
 OBJS_CLIENT	=	$(addprefix build/,${SRCS_CLIENT:.c=.o})
 OBJS_SERVER	=	$(addprefix build/,${SRCS_SERVER:.c=.o})
