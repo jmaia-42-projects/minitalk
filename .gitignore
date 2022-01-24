@@ -2,3 +2,5 @@
 .*.swp
 client
 server
+!client/
+!server/
