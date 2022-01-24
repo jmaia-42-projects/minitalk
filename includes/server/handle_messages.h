@@ -1,23 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   handle_messages.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/21 18:11:37 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/24 13:50:15 by jmaia            ###   ########.fr       */
+/*   Created: 2022/01/21 19:08:13 by jmaia             #+#    #+#             */
+/*   Updated: 2022/01/21 19:08:45 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "handle_messages.h"
-#include "print_pid.h"
+#ifndef HANDLE_MESSAGES_H
+# define HANDLE_MESSAGES_H
 
-int	main(void)
-{
-	int	err;
+int	handle_messages(void);
 
-	print_pid(1);
-	err = !handle_messages();
-	return (err);
-}
+#endif
