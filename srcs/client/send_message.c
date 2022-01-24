@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 14:21:05 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/24 18:20:01 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/24 22:42:18 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	send_message(int pid, const char *message)
 	int	err;
 
 	i = 0;
+	err = 0;
 	while (message[i] && !err)
 		err = !send_char(pid, message[i++]);
 	if (err)
@@ -37,6 +38,7 @@ static int	send_char(int pid, char c)
 	int		err;
 
 	i = 0;
+	err = 0;
 	while (i < 8 && !err)
 	{
 		bit = c & 1 << (7 - i);
