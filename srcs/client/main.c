@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 14:06:46 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/24 14:37:24 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/24 14:49:51 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,7 @@ int	main(int ac, char **av)
 
 static int	parse_args_if_valid(int ac, char **av, int *pid, char **message)
 {
-	(void) ac;
-	(void) av;
-	(void) pid;
-	(void) message;
+	if (ac < 3)
+		return (0);
 	return (0);
 }
