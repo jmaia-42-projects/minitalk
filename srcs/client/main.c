@@ -6,12 +6,14 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 14:06:46 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/24 14:51:19 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/24 15:03:26 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "client/send_message.h"
+#include "libft.h"
 #include "ft_printf.h"
+
+#include "client/send_message.h"
 
 static int	parse_args_if_valid(int ac, char **av, int *pid, char **message);
 
@@ -38,9 +40,13 @@ int	main(int ac, char **av)
 
 static int	parse_args_if_valid(int ac, char **av, int *pid, char **message)
 {
-	(void) ac;
-	(void) av;
-	(void) pid;
-	(void) message;
-	return (0);
+	if (ac < 3)
+		return (0);
+	if (!ft_isint(av[1]))
+		return (0);
+	*pid = ft_atoi(av[1]);
+	if (*pid < 0)
+		return (0);
+	*message = av[2];
+	return (1);
 }
