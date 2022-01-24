@@ -1,7 +1,7 @@
 NAME		=	minitalk
 
 SRCS_COMMON	=
-SRCS_CLIENT	=	$(SRCS_COMMON) $(addprefix client/, )
+SRCS_CLIENT	=	$(SRCS_COMMON) $(addprefix client/, main.c)
 SRCS_SERVER	=	$(SRCS_COMMON) $(addprefix server/, )
 
 OBJS_CLIENT	=	$(addprefix build/, ${SRCS_CLIENT:.c=.o})
@@ -25,10 +25,10 @@ build/%.o	:	srcs/%.c
 $(NAME)	:	client server
 
 client	:	$(OBJS_CLIENT)
-	$(CC) $(CFLAGS) $(OBJS_CLIENT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS_CLIENT) -o client
 
 server	:	$(OBJS_SERVER)
-	$(CC) $(CFLAGS) $(OBJS_SERVER) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS_SERVER) -o server
 
 clean	:	
 	rm -Rf build/
