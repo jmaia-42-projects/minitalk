@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 14:21:05 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/24 17:41:48 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/24 17:55:35 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,21 @@ int	send_message(int pid, const char *message)
 
 static int	send_char(int pid, char c)
 {
-	(void) pid;
-	(void) c;
-	return (0);
+	int		i;
+	char	bit;
+	int		err;
+
+	i = 0;
+	while (i < 8)
+	{
+		bit = c & 1 << (7 - i);
+		if (bit)
+			err = kill(pid, SIGUSR1);
+		else
+			err = kill(pid, SIGUSR2);
+		i++;
+	}
+	if (err)
+		return (0);
+	return (1);
 }
