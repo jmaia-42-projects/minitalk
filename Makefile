@@ -9,9 +9,9 @@ OBJS_SERVER	=	$(addprefix build/, ${SRCS_SERVER:.c=.o})
 
 CC			=	cc
 CFLAGS		=	-Wall -Werror -Wextra
-INCLUDE		=	-I includes/ -I libs/ft_printf_fd/includes/
+INCLUDE		=	-I includes/ -I libs/libft/ -I libs/ft_printf_fd/includes/
 LIBS_COMMON	=	$(addprefix libs/, ft_printf_fd/libftprintf.a)
-LIBS_CLIENT	=	$(LIBS_COMMON) $(addprefix libs/, )
+LIBS_CLIENT	=	$(LIBS_COMMON) $(addprefix libs/, libft/libft.a)
 LIBS_SERVER	=	$(LIBS_COMMON) $(addprefix libs/, ft_printf/libftprintf.a)
 
 all		:	$(NAME)
@@ -26,6 +26,9 @@ $(NAME)	:	client server
 
 libs/ft_printf_fd/libftprintf.a	:
 	make -C libs/ft_printf_fd
+
+libs/libft/libft.a	:
+	make -C libs/libft/
 
 client	:	$(LIBS_CLIENT) $(OBJS_CLIENT)
 	$(CC) $(CFLAGS) $(OBJS_CLIENT) $(LIBS_CLIENT) -o client
@@ -43,6 +46,7 @@ re		:	fclean ${NAME}
 
 relibs	:
 	make -C libs/ft_printf_fd re
+	make -C libs/libft re
 
 reall	:	relibs re
 
