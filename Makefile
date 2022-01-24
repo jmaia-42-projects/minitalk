@@ -2,7 +2,7 @@ NAME		=	minitalk
 
 SRCS_COMMON	=
 SRCS_CLIENT	=	$(SRCS_COMMON) $(addprefix client/, )
-SRCS_SERVER	=	$(SRCS_COMMON) $(addprefix server/, print_pid.c)
+SRCS_SERVER	=	$(SRCS_COMMON) $(addprefix server/, )
 
 OBJS_CLIENT	=	$(addprefix build/, ${SRCS_CLIENT:.c=.o})
 OBJS_SERVER	=	$(addprefix build/, ${SRCS_SERVER:.c=.o})
