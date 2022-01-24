@@ -1,4 +1,4 @@
 *.o
 .*.swp
-client
-server
+./client
+./server
