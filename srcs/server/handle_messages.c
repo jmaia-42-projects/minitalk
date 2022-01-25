@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 18:06:54 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/24 22:55:24 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/25 16:13:54 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-static void	handle_signal(int a);
+static void	handle_signal(int sig, siginfo_t *info, void *ucontext);
 
 int	handle_messages(void)
 {
@@ -25,9 +25,9 @@ int	handle_messages(void)
 	sigemptyset(&set);
 	sigaddset(&set, SIGUSR1);
 	sigaddset(&set, SIGUSR2);
-	sa.sa_handler = &handle_signal;
+	sa.sa_sigaction = &handle_signal;
 	sa.sa_mask = set;
-	sa.sa_flags = 0;
+	sa.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &sa, 0);
 	sigaction(SIGUSR2, &sa, 0);
 	while (1)
@@ -35,7 +35,9 @@ int	handle_messages(void)
 	return (1);
 }
 
-static void	handle_signal(int a)
+static void	handle_signal(int sig, siginfo_t *info, void *ucontext)
 {
-	printf("Signal : %d\n", a);
+	(void) info;
+	(void) ucontext;
+	printf("Signal : %d\n", sig);
 }
