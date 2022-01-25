@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 14:26:16 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/24 17:26:24 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/25 16:18:48 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <sys/types.h>
 # include <signal.h>
+# include <unistd.h>
 
 int	send_message(int pid, const char *message);
 

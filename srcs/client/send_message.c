@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 14:21:05 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/24 22:42:18 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/25 16:18:18 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static int	send_char(int pid, char c)
 			err = kill(pid, SIGUSR1);
 		else
 			err = kill(pid, SIGUSR2);
+		usleep(10);
 		i++;
 	}
 	if (err)
