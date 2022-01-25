@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 18:06:54 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/25 18:54:04 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/25 19:44:47 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,15 @@ static int	handle_loop(t_dynamic_buffer *buffer)
 	i_bit = 0;
 	while (1)
 	{
-		pause();
+		if (!g_sig)
+			continue;
 		append_bit(g_sig, &c, &i_bit, buffer);
 		if (i_bit == 0 && c == 0)
 		{
 			message = as_str(buffer);
 			buffer->i = 0;
 			buffer->len = 0;
-			printf("%s\n", message);
+			ft_putendl_fd(message, 1);
 			if (!message)
 				return (0);
 			free(message);

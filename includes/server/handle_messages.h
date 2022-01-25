@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/21 19:08:13 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/25 17:26:59 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/25 19:36:52 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <signal.h>
 
 # include "libdynamic_buffer.h"
+# include "libft.h"
 
 int	handle_messages(void);
 
