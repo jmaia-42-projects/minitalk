@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 18:06:54 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/25 17:25:40 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/25 17:35:17 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,27 @@
 
 static void	init_signal_handling(void);
 static void	handle_signal(int sig, siginfo_t *info, void *ucontext);
-static void	handle_loop(t_dynamic_buffer *buffer);
+static int	handle_loop(t_dynamic_buffer *buffer);
 
 int	g_sig = 0;
 
 int	handle_messages(void)
 {
+	t_dynamic_buffer	dirty_tmp;
 	t_dynamic_buffer	*buffer;
 	int					status;
 
 	init_signal_handling();
-	buffer = get_buffer();
-	if (!buffer)
+	dirty_tmp = get_buffer(sizeof(char));
+	if (!dirty_tmp.buffer)
 		return (0);
+	buffer = &dirty_tmp;
 	status = handle_loop(buffer);
 	free_buffer(&buffer, &free);
 	return (status);
 }
 
-static void	handle_loop(t_dynamic_buffer *buffer)
+static int	handle_loop(t_dynamic_buffer *buffer)
 {
 	char	*message;
 
@@ -46,6 +48,10 @@ static void	handle_loop(t_dynamic_buffer *buffer)
 		{
 			g_sig = 0;
 		}
+		message = as_str(buffer);
+		if (!message)
+			return (0);
+		free(message);
 	}
 }
 
