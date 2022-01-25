@@ -8,9 +8,7 @@ CFLAGS				=	-Wall -Werror -Wextra
 
 INCLUDE				=	includes/
 
-export BUILD		?=	${PWD}/build
-
-export LIB_FOLDER	?=	${PWD}/lib
+export	BUILD		?=	$(PWD)/build/
 
 all				:	$(NAME)
 

@@ -6,13 +6,15 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 23:13:51 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/16 18:35:02 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/25 17:31:46 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBDYNAMIC_BUFFER_H
 # define LIBDYNAMIC_BUFFER_H
+
 # include <stddef.h>
+# include <stdlib.h>
 
 typedef struct s_dynamic_buffer
 {
