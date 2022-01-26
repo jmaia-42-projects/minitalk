@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 18:06:54 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/26 16:09:44 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/26 18:06:18 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	handle_signal(int sig, siginfo_t *info, void *ucontext);
 static int	handle_loop(t_dynamic_buffer *buffer);
 static void	append_bit(int sig, char *c, int *i_bit, t_dynamic_buffer *buffer);
 
-int	g_sig = 0;
+siginfo_t	g_last_sig = {0};
 
 int	handle_messages(void)
 {
@@ -47,9 +47,9 @@ static int	handle_loop(t_dynamic_buffer *buffer)
 	i_bit = 0;
 	while (1)
 	{
-		if (!g_sig)
+		if (!g_last_sig.si_pid)
 			continue ;
-		append_bit(g_sig, &c, &i_bit, buffer);
+		append_bit(g_last_sig.si_signo, &c, &i_bit, buffer);
 		if (i_bit == 0 && c == 0)
 		{
 			message = as_str(buffer);
@@ -60,7 +60,7 @@ static int	handle_loop(t_dynamic_buffer *buffer)
 				return (0);
 			free(message);
 		}
-		g_sig = 0;
+		g_last_sig = (siginfo_t){0};
 	}
 }
 
@@ -95,7 +95,7 @@ static void	init_signal_handling(void)
 
 static void	handle_signal(int sig, siginfo_t *info, void *ucontext)
 {
-	(void) info;
+	(void) sig;
 	(void) ucontext;
-	g_sig = sig;
+	g_last_sig = *info;
 }
