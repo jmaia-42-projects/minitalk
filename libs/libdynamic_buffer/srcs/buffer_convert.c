@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_messages.h                                  :+:      :+:    :+:   */
+/*   buffer_convert.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/21 19:08:13 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/25 19:36:52 by jmaia            ###   ########.fr       */
+/*   Created: 2021/12/02 11:22:25 by jmaia             #+#    #+#             */
+/*   Updated: 2021/12/06 17:38:38 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HANDLE_MESSAGES_H
-# define HANDLE_MESSAGES_H
+#include "buffer_convert.h"
 
-# include <signal.h>
+char	*as_str(t_dynamic_buffer *buffer)
+{
+	char	*str;
+	size_t	len;
 
-# include "libdynamic_buffer.h"
-# include "libft.h"
-
-int	handle_messages(void);
-
-#endif
+	len = buffer->elem_size * buffer->i;
+	str = malloc(sizeof(*str) * (len + 1));
+	if (!str)
+		return (0);
+	ft_memcpy(str, buffer->buffer, sizeof(*str) * len);
+	str[len] = 0;
+	return (str);
+}
