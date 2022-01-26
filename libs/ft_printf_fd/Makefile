@@ -32,7 +32,7 @@ export BUILD ?=	$(dir $(abspath $(lastword $(MAKEFILE_LIST))))/build
 
 all		:	$(NAME)
 
-build/%.o	:	srcs/%.c
+$(BUILD)/%.o	:	srcs/%.c
 	@if [ ! -d $(dir $@) ]; then\
 		mkdir -p $(dir $@);\
 	fi
@@ -44,8 +44,8 @@ libs/libft/libft.a	:
 libs/libdynamic_buffer/libdynamic_buffer.a	:
 	make -C libs/libdynamic_buffer
 
-$(NAME)	:	libs/libft/libft.a libs/libdynamic_buffer/libdynamic_buffer.a $(addprefix build/,${OBJS})
-	ar rc ${NAME} $(addprefix build/,${OBJS} ${OBJS_LIBFT} ${OBJS_LIBDYNAMIC_BUFFER})
+$(NAME)	:	libs/libft/libft.a libs/libdynamic_buffer/libdynamic_buffer.a $(addprefix $(BUILD)/,${OBJS})
+	ar rc ${NAME} $(addprefix $(BUILD)/,${OBJS} ${OBJS_LIBFT} ${OBJS_LIBDYNAMIC_BUFFER})
 
 clean	: cleanlibs
 	rm -Rf build/
