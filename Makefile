@@ -1,14 +1,18 @@
 NAME		=	minitalk
 
-SRCS_CLIENT	=	$(addprefix srcs/, )
-SRCS_SERVER	=	$(addprefix srcs/, )
+SRCS_COMMON	=
+SRCS_CLIENT	=	$(SRCS_COMMON) $(addprefix client/, main.c send_message.c)
+SRCS_SERVER	=	$(SRCS_COMMON) $(addprefix server/, )
 
-OBJS_CLIENT	=	$(addprefix build/,${SRCS_CLIENT:.c=.o})
-OBJS_SERVER	=	$(addprefix build/,${SRCS_SERVER:.c=.o})
+OBJS_CLIENT	=	$(addprefix build/, ${SRCS_CLIENT:.c=.o})
+OBJS_SERVER	=	$(addprefix build/, ${SRCS_SERVER:.c=.o})
 
 CC			=	cc
 CFLAGS		=	-Wall -Werror -Wextra
-INCLUDE		=	includes/
+INCLUDE		=	-I includes/ -I libs/libft/ -I libs/ft_printf_fd/includes/
+LIBS_COMMON	=	$(addprefix libs/, ft_printf_fd/libftprintf.a)
+LIBS_CLIENT	=	$(LIBS_COMMON) $(addprefix libs/, libft/libft.a)
+LIBS_SERVER	=	$(LIBS_COMMON) $(addprefix libs/, ft_printf/libftprintf.a)
 
 all		:	$(NAME)
 
@@ -16,15 +20,21 @@ build/%.o	:	srcs/%.c
 	@if [ ! -d $(dir $@) ]; then\
 		mkdir -p $(dir $@);\
 	fi
-	cc ${CFLAGS} -I ${INCLUDE} -c $< -o $@
+	cc ${CFLAGS} ${INCLUDE} -c $< -o $@
 
 $(NAME)	:	client server
 
-client	:	$(OBJS_CLIENT)
-	$(CC) $(CFLAGS) $(OBJS_CLIENT) -o $(NAME)
+libs/ft_printf_fd/libftprintf.a	:
+	make -C libs/ft_printf_fd
+
+libs/libft/libft.a	:
+	make -C libs/libft/
+
+client	:	$(LIBS_CLIENT) $(OBJS_CLIENT)
+	$(CC) $(CFLAGS) $(OBJS_CLIENT) $(LIBS_CLIENT) -o client
 
 server	:	$(OBJS_SERVER)
-	$(CC) $(CFLAGS) $(OBJS_SERVER) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS_SERVER) -o server
 
 clean	:	
 	rm -Rf build/
@@ -34,4 +44,10 @@ fclean	:	clean
 
 re		:	fclean ${NAME}
 
-.PHONY	:	all clean fclean re client server
+relibs	:
+	make -C libs/ft_printf_fd re
+	make -C libs/libft re
+
+reall	:	relibs re
+
+.PHONY	:	all clean fclean re reall
