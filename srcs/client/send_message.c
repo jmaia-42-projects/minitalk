@@ -6,13 +6,17 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 14:21:05 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/26 17:39:27 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/26 18:30:50 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client/send_message.h"
 
 static int	send_char(int pid, char c);
+static void	init_signal_handling(void);
+static void	handle_signal(int sig, siginfo_t *info, void *ucontext);
+
+int	g_wait_for_process = 0;
 
 int	send_message(int pid, const char *message)
 {
@@ -21,6 +25,7 @@ int	send_message(int pid, const char *message)
 
 	i = 0;
 	err = 0;
+	init_signal_handling();
 	while (message[i] && !err)
 		err = !send_char(pid, message[i++]);
 	if (err)
@@ -46,10 +51,33 @@ static int	send_char(int pid, char c)
 			err = kill(pid, SIGUSR1);
 		else
 			err = kill(pid, SIGUSR2);
-		usleep(20);
+		g_wait_for_process = pid;
+		while (g_wait_for_process)
+			;
 		i++;
 	}
 	if (err)
 		return (0);
 	return (1);
+}
+
+static void	init_signal_handling(void)
+{
+	struct sigaction	sa;
+	sigset_t			set;
+
+	sigemptyset(&set);
+	sigaddset(&set, SIGUSR1);
+	sa.sa_sigaction = &handle_signal;
+	sa.sa_mask = set;
+	sa.sa_flags = SA_SIGINFO;
+	sigaction(SIGUSR1, &sa, 0);
+}
+
+static void	handle_signal(int sig, siginfo_t *info, void *ucontext)
+{
+	(void) ucontext;
+	write(1, "recu !\n", 7);
+	if (sig == SIGUSR1 && info->si_pid == g_wait_for_process)
+		g_wait_for_process = 0;
 }

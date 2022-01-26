@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 18:06:54 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/26 18:06:18 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/26 18:08:05 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static int	handle_loop(t_dynamic_buffer *buffer)
 				return (0);
 			free(message);
 		}
+		kill(g_last_sig.si_pid, SIGUSR1);
 		g_last_sig = (siginfo_t){0};
 	}
 }
