@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 14:21:05 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/26 18:30:50 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/27 12:19:12 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static int	send_char(int pid, char c);
 static void	init_signal_handling(void);
 static void	handle_signal(int sig, siginfo_t *info, void *ucontext);
+static int	wait_for_process(void);
 
 int	g_wait_for_process = 0;
 
@@ -39,6 +40,7 @@ int	send_message(int pid, const char *message)
 static int	send_char(int pid, char c)
 {
 	int		i;
+	int		j;
 	char	bit;
 	int		err;
 
@@ -46,17 +48,34 @@ static int	send_char(int pid, char c)
 	err = 0;
 	while (i < 8 && !err)
 	{
+		j = 0;
+		err = !wait_for_process();
+		if (err)
+			return (0);
 		bit = c & 1 << (7 - i);
+		g_wait_for_process = pid;
 		if (bit)
 			err = kill(pid, SIGUSR1);
 		else
 			err = kill(pid, SIGUSR2);
-		g_wait_for_process = pid;
-		while (g_wait_for_process)
-			;
 		i++;
 	}
 	if (err)
+		return (0);
+	return (1);
+}
+
+static int	wait_for_process(void)
+{
+	int	j;
+
+	j = 0;
+	while (g_wait_for_process && j < 10000)
+	{
+		usleep(1);
+		j++;
+	}
+	if (j == 10000)
 		return (0);
 	return (1);
 }
@@ -77,7 +96,6 @@ static void	init_signal_handling(void)
 static void	handle_signal(int sig, siginfo_t *info, void *ucontext)
 {
 	(void) ucontext;
-	write(1, "recu !\n", 7);
 	if (sig == SIGUSR1 && info->si_pid == g_wait_for_process)
 		g_wait_for_process = 0;
 }

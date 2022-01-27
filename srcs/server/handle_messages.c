@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 18:06:54 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/26 18:08:05 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/27 12:14:50 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static int	handle_loop(t_dynamic_buffer *buffer)
 	char	*message;
 	char	c;
 	int		i_bit;
+	int		tmp_pid;
 
 	i_bit = 0;
 	while (1)
@@ -60,8 +61,9 @@ static int	handle_loop(t_dynamic_buffer *buffer)
 				return (0);
 			free(message);
 		}
-		kill(g_last_sig.si_pid, SIGUSR1);
+		tmp_pid = g_last_sig.si_pid;
 		g_last_sig = (siginfo_t){0};
+		kill(tmp_pid, SIGUSR1);
 	}
 }
 
