@@ -4,7 +4,7 @@ OBJS				=	${SRCS:.c=.o}
 
 NAME				=	libdynamic_buffer.a
 
-CFLAGS				=	-Wall -Werror -Wextra
+CFLAGS				=	-Wall -Werror -Wextra -g3
 
 INCLUDE				=	includes/
 

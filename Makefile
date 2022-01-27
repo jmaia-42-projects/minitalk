@@ -10,7 +10,7 @@ OBJS_CLIENT	=	$(addprefix build/, ${SRCS_CLIENT:.c=.o})
 OBJS_SERVER	=	$(addprefix build/, ${SRCS_SERVER:.c=.o})
 
 CC			=	cc
-CFLAGS		=	-Wall -Werror -Wextra
+CFLAGS		=	-Wall -Werror -Wextra -g3
 LIBS_COMMON	=	$(addprefix libs/, ft_printf_fd/libftprintf.a)
 LIBS_CLIENT	=	$(addprefix libs/, libft/libft.a) $(LIBS_COMMON)
 LIBS_SERVER	=	$(LIBS_COMMON) $(addprefix libs/, 	libdynamic_buffer/libdynamic_buffer.a)
