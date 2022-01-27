@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/24 18:06:54 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/27 12:14:50 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/27 12:54:43 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 static void	init_signal_handling(void);
 static void	handle_signal(int sig, siginfo_t *info, void *ucontext);
 static int	handle_loop(t_dynamic_buffer *buffer);
-static void	append_bit(int sig, char *c, int *i_bit, t_dynamic_buffer *buffer);
+static int	append_bit(siginfo_t sig, char *c, int *i_bit,
+				t_dynamic_buffer *buffer);
 
 siginfo_t	g_last_sig = {0};
 
@@ -34,44 +35,44 @@ int	handle_messages(void)
 		return (0);
 	buffer = &dirty_tmp;
 	status = handle_loop(buffer);
-	free_buffer(&buffer, &free);
+	free_buffer(&buffer, 0);
 	return (status);
 }
 
 static int	handle_loop(t_dynamic_buffer *buffer)
 {
-	char	*message;
 	char	c;
 	int		i_bit;
 	int		tmp_pid;
+	int		err;
 
 	i_bit = 0;
 	while (1)
 	{
 		if (!g_last_sig.si_pid)
 			continue ;
-		append_bit(g_last_sig.si_signo, &c, &i_bit, buffer);
-		if (i_bit == 0 && c == 0)
+		if (tmp_pid != g_last_sig.si_pid)
 		{
-			message = as_str(buffer);
+			c = 0;
 			buffer->i = 0;
-			buffer->len = 0;
-			ft_putendl_fd(message, 1);
-			if (!message)
-				return (0);
-			free(message);
 		}
+		err = !append_bit(g_last_sig, &c, &i_bit, buffer);
+		if (err)
+			return (0);
 		tmp_pid = g_last_sig.si_pid;
 		g_last_sig = (siginfo_t){0};
 		kill(tmp_pid, SIGUSR1);
 	}
 }
 
-static void	append_bit(int sig, char *c, int *i_bit, t_dynamic_buffer *buffer)
+static int	append_bit(siginfo_t sig, char *c, int *i_bit,
+				t_dynamic_buffer *buffer)
 {
+	char	*message;
+
 	if (*i_bit == 0)
 		*c = 0;
-	if (sig == SIGUSR1)
+	if (sig.si_signo == SIGUSR1)
 		*c |= 1 << (7 - *i_bit);
 	++*i_bit;
 	if (*i_bit == 8)
@@ -79,6 +80,17 @@ static void	append_bit(int sig, char *c, int *i_bit, t_dynamic_buffer *buffer)
 		*i_bit = 0;
 		append(buffer, c);
 	}
+	if (*i_bit == 0 && *c == 0)
+	{
+		message = as_str(buffer);
+		buffer->i = 0;
+		buffer->len = 0;
+		ft_putendl_fd(message, 1);
+		if (!message)
+			return (0);
+		free(message);
+	}
+	return (1);
 }
 
 static void	init_signal_handling(void)

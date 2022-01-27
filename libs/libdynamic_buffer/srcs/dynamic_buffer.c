@@ -6,7 +6,7 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 23:23:27 by jmaia             #+#    #+#             */
-/*   Updated: 2022/01/16 18:31:59 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/01/27 12:48:13 by jmaia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	free_buffer(t_dynamic_buffer **buffer, void (*del)(void *))
 			del(get_elem_ptr(*buffer, i++));
 	}
 	free((*buffer)->buffer);
-	free(*buffer);
 	*buffer = 0;
 	return (1);
 }
